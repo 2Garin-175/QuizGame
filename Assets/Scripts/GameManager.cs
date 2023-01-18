@@ -8,7 +8,7 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    const int POINTS_FOR_ANSWER = 100;
+    const int POINTS_FOR_ANSWER = 1;
     const string TIME_SAVE_KEY = "BestTime";
 
     //[SerializeField] поля для заполнения в редакторе
@@ -93,10 +93,17 @@ public class GameManager : MonoBehaviour
             quaternionsPool.Remove(currentQuestion); //удаляем вопрос который загрузили
 
             questionsBoardText.text = currentQuestion.questionText;
-            answers[0].transform.GetComponentInChildren<TextMeshProUGUI>().text = currentQuestion.answer_A;
-            answers[1].transform.GetComponentInChildren<TextMeshProUGUI>().text = currentQuestion.answer_B;
-            answers[2].transform.GetComponentInChildren<TextMeshProUGUI>().text = currentQuestion.answer_C;
-            answers[3].transform.GetComponentInChildren<TextMeshProUGUI>().text = currentQuestion.answer_D;
+
+            string[] temp = new string[4] { currentQuestion.answer_A, currentQuestion.answer_B, currentQuestion.answer_C, currentQuestion.answer_D };
+            for(int i = 0;i< answers.Length;i++)
+            {
+                answers[i].transform.GetComponentInChildren<TextMeshProUGUI>().text = temp[i]; //выставляем ответы, для вопроса
+            }
+
+            //answers[0].transform.GetComponentInChildren<TextMeshProUGUI>().text = currentQuestion.answer_A; //  <-- второй вариант, выглядит неочень)
+            //answers[1].transform.GetComponentInChildren<TextMeshProUGUI>().text = currentQuestion.answer_B;
+            //answers[2].transform.GetComponentInChildren<TextMeshProUGUI>().text = currentQuestion.answer_C;
+            //answers[3].transform.GetComponentInChildren<TextMeshProUGUI>().text = currentQuestion.answer_D;
         }
     }
 
@@ -158,9 +165,11 @@ public class GameManager : MonoBehaviour
         finishMenu.SetActive(true);
 
         finishTimeText.text = ParceTimeToString(time);
-        finishScoreText.text = ((rightAnswerCount * POINTS_FOR_ANSWER) + (mistakeCount * -POINTS_FOR_ANSWER)).ToString();
+        
+        finishScoreText.text = rightAnswerCount.ToString();
+        // finishScoreText.text = ((rightAnswerCount * POINTS_FOR_ANSWER) + (mistakeCount * -POINTS_FOR_ANSWER)).ToString(); // <-- вариант, если хотим отображать счет, а не кол-во ответов
 
-        if(!mistakeFinish)
+        if (!mistakeFinish)
             UpdateTimeData();
     }
 
