@@ -9,6 +9,7 @@ using System.Linq;
 public class GameManager : MonoBehaviour
 {
     const int POINTS_FOR_ANSWER = 1;
+    const int ANSWER_BLINKS_COUNT = 5;
     const string TIME_SAVE_KEY = "BestTime";
 
     //[SerializeField] поля для заполнения в редакторе
@@ -121,7 +122,7 @@ public class GameManager : MonoBehaviour
 
         Image tempImage = answers[answerID].GetComponent<Image>();
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < ANSWER_BLINKS_COUNT; i++)
         {
             tempImage.color = Color.green;
             yield return new WaitForSeconds(0.2f);
@@ -142,7 +143,7 @@ public class GameManager : MonoBehaviour
 
         tempRightImage.color = Color.green;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < ANSWER_BLINKS_COUNT; i++)
         {
             tempMistakeImage.color = Color.red;
             yield return new WaitForSeconds(0.2f);
@@ -152,7 +153,7 @@ public class GameManager : MonoBehaviour
 
         tempRightImage.color = Color.white;
 
-        if(mistakeCount == 3)
+        if(mistakeCount == mistakes.Length)
             FinishGame(true);
         else
             LoadNextQuestion();
